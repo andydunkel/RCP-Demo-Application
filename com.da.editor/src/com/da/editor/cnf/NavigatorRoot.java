@@ -7,19 +7,16 @@ import org.eclipse.core.runtime.PlatformObject;
 
 public class NavigatorRoot extends PlatformObject {
 
-	public Set<ParentNode> getParentNodes() {		
-		Set<ParentNode> list = new HashSet<ParentNode>();
-		
+	public Set<ParentNode> getParentNodes() {					
 		ParentNode node = new ParentNode();
 		node.setName("Hello World");
-		list.add(node);
-		
-		
+				
 		ParentNode node2 = new ParentNode();
 		node2.setName("Hallo Welt");
 		
-		list.add(node2);
-		
+		Set<ParentNode> list = new HashSet<ParentNode>();
+		list.add(node);		
+		list.add(node2);		
 		return list;
 	}	
 }

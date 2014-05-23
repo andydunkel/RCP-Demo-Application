@@ -28,7 +28,7 @@
       </view>
       <view
             allowMultiple="false"
-            class="MyNavigator"
+            class="com.da.editor.cnf.MyNavigator"
             id="com.da.editor.cnf.view"
             name="Project"
             restorable="true">
