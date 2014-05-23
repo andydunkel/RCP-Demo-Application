@@ -9,6 +9,10 @@
     <genClasses ecoreClass="mymodel.ecore#//Person">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute mymodel.ecore#//Person/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute mymodel.ecore#//Person/age"/>
+      <genOperations ecoreOperation="mymodel.ecore#//Person/hasName">
+        <genParameters ecoreParameter="mymodel.ecore#//Person/hasName/chain"/>
+        <genParameters ecoreParameter="mymodel.ecore#//Person/hasName/context"/>
+      </genOperations>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

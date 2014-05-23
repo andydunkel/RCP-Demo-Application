@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Logic
+Bundle-SymbolicName: com.da.editor.logic
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.da.editor.logic.Activator
+Bundle-Vendor: DA
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

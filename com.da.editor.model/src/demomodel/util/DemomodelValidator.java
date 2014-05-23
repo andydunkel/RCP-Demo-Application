@@ -6,6 +6,7 @@ import demomodel.*;
 
 import java.util.Map;
 
+import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.ResourceLocator;
 
@@ -115,8 +116,37 @@ public class DemomodelValidator extends EObjectValidator {
 		if (result || diagnostics != null) result &= validate_UniqueID(person, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryKeyUnique(person, diagnostics, context);
 		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(person, diagnostics, context);
+		if (result || diagnostics != null) result &= validatePerson_hasValidAge(person, diagnostics, context);
 		if (result || diagnostics != null) result &= validatePerson_hasName(person, diagnostics, context);
 		return result;
+	}
+
+	/**
+	 * Validates the hasValidAge constraint of '<em>Person</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validatePerson_hasValidAge(Person person, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		// TODO implement the constraint
+		// -> specify the condition that violates the constraint
+		// -> verify the diagnostic details, including severity, code, and message
+		// Ensure that you remove @generated or mark it @generated NOT
+		if (false) {
+			if (diagnostics != null) {
+				diagnostics.add
+					(createDiagnostic
+						(Diagnostic.ERROR,
+						 DIAGNOSTIC_SOURCE,
+						 0,
+						 "_UI_GenericConstraint_diagnostic",
+						 new Object[] { "hasValidAge", getObjectLabel(person, context) },
+						 new Object[] { person },
+						 context));
+			}
+			return false;
+		}
+		return true;
 	}
 
 	/**
