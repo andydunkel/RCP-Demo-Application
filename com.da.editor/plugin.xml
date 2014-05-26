@@ -33,6 +33,12 @@
             name="Project"
             restorable="true">
       </view>
+      <view
+            class="com.da.editor.markerview.MyMarkerView"
+            id="com.da.editor.markers.mymarkerview"
+            name="Problem View"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -74,6 +80,23 @@
             </contentExtension>
          </includes>
       </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.markerSupport">
+      <markerContentGenerator
+            id="com.da.editor.markerContentGenerator"
+            name="My Marker Generator">
+	      <markerTypeReference id="org.eclipse.core.resources.marker"/>
+			<markerFieldReference id="org.eclipse.ui.ide.descriptionField"/>
+      		<markerFieldReference id="org.eclipse.ui.ide.priorityField"/>
+      		
+      		<markerFieldReference id="com.da.editor.mymarkerfield"/>
+      </markerContentGenerator>
+      <markerField
+            class="com.da.editor.markerview.MyMarkerField"
+            id="com.da.editor.mymarkerfield"
+            name="Project">
+      </markerField>
    </extension>
    
 

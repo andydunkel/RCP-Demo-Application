@@ -3,6 +3,11 @@ package com.da.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.validation.model.EvaluationMode;
@@ -66,15 +71,36 @@ public class View extends ViewPart {
 		IStatus status = validator.validate(listPersons);
 		
 		if (!status.isOK()) {
-			MessageDialog.openError(getSite().getShell(), "Error", status.getMessage());
+			
+			for (IStatus s : status.getChildren()) {
+				createMarker(s.getMessage());
+			}			
+		
+			//MessageDialog.openError(getSite().getShell(), "Error", status.getMessage());
 		}
+				
 		ValidationDelegateClientSelector.running = false;
+	}
+
+	private void createMarker(String message) {
+		try {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IResource resource = workspace.getRoot();
+
+			IMarker marker = (IMarker) resource.createMarker(IMarker.PROBLEM);
+			marker.setAttribute(IMarker.PROBLEM, message);
+			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR); 
+			
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
-	public void setFocus() {
+	public void setFocus() {		
 		
 	}
 }
