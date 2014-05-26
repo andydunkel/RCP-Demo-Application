@@ -1,10 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Logic
-Bundle-SymbolicName: com.da.editor.logic
+Bundle-SymbolicName: com.da.editor.logic;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: com.da.editor.logic.Activator
 Bundle-Vendor: DA
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.validation;bundle-version="1.7.0",
+ com.da.editor.model
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Export-Package: com.da.editor.logic

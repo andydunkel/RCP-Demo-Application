@@ -1,77 +1,80 @@
 package com.da.editor;
 
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.validation.model.EvaluationMode;
+import org.eclipse.emf.validation.service.IBatchValidator;
+import org.eclipse.emf.validation.service.ModelValidationService;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+
+import com.da.editor.logic.ValidationDelegateClientSelector;
+
+import demomodel.DemomodelFactory;
+import demomodel.Person;
 
 public class View extends ViewPart {
+	public View() {
+	}
 	public static final String ID = "com.da.editor.view";
-
-	private TableViewer viewer;
-
-	/**
-	 * The content provider class is responsible for providing objects to the
-	 * view. It can wrap existing objects in adapters or simply return objects
-	 * as-is. These objects may be sensitive to the current input of the view,
-	 * or ignore it and always show the same content (like Task List, for
-	 * example).
-	 */
-	class ViewContentProvider implements IStructuredContentProvider {
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
-
-		public void dispose() {
-		}
-
-		public Object[] getElements(Object parent) {
-			if (parent instanceof Object[]) {
-				return (Object[]) parent;
-			}
-	        return new Object[0];
-		}
-	}
-
-	class ViewLabelProvider extends LabelProvider implements
-			ITableLabelProvider {
-		public String getColumnText(Object obj, int index) {
-			return getText(obj);
-		}
-
-		public Image getColumnImage(Object obj, int index) {
-			return getImage(obj);
-		}
-
-		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().getSharedImages().getImage(
-					ISharedImages.IMG_OBJ_ELEMENT);
-		}
-	}
 
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
-				| SWT.V_SCROLL);
-		viewer.setContentProvider(new ViewContentProvider());
-		viewer.setLabelProvider(new ViewLabelProvider());
-		// Provide the input to the ContentProvider
-		viewer.setInput(new String[] {"One", "Two", "Three"});
+		parent.setLayout(null);
+		
+		Button btnExecuteBatchValidation = new Button(parent, SWT.NONE);
+		btnExecuteBatchValidation.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				doValidation();
+			}
+		});
+		btnExecuteBatchValidation.setBounds(10, 10, 170, 23);
+		btnExecuteBatchValidation.setText("Execute Batch Validation");
+	}
+
+	protected void doValidation() {
+		ValidationDelegateClientSelector.running = true;
+
+		IBatchValidator validator = (IBatchValidator)ModelValidationService.getInstance()
+			.newValidator(EvaluationMode.BATCH);
+		validator.setIncludeLiveConstraints(true);
+		
+		//create Person without name:
+		Person p = DemomodelFactory.eINSTANCE.createPerson();				
+		Person p1 = DemomodelFactory.eINSTANCE.createPerson();
+		Person p2 = DemomodelFactory.eINSTANCE.createPerson();
+		
+		p2.setName("Andy");
+		
+		List<Person> listPersons = new ArrayList<Person>();
+		listPersons.add(p);
+		listPersons.add(p1);
+		listPersons.add(p2);
+		
+		IStatus status = validator.validate(listPersons);
+		
+		if (!status.isOK()) {
+			MessageDialog.openError(getSite().getShell(), "Error", status.getMessage());
+		}
+		ValidationDelegateClientSelector.running = false;
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		
 	}
 }

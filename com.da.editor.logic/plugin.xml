@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.emf.validation.constraintProviders">
+      <category
+            name="Person Constraints"
+            id="PersonConstraints"/>
+      <constraintProvider cache="true">
+         <package namespaceUri="http://model.editor.da.com"/>
+         <constraints categories="PersonConstraints">
+            <constraint
+                  lang="Java"
+                  class="com.da.editor.logic.PersonValidateConstraint"
+                  severity="ERROR"
+                  mode="Batch"
+                  name="Non-Empty Names"
+                  id="com.da.editor.logic.ValidatePerson"
+                  statusCode="1">
+               <description>
+                  All Persons must have a name.
+               </description>
+               <message>
+                  A {0} has been found to have no name.
+               </message>
+               <target class="Person"/>
+            </constraint>
+         </constraints>
+      </constraintProvider>
+   </extension>
+
+	<extension point="org.eclipse.emf.validation.constraintBindings">
+	     <clientContext
+	           default="false"
+	           id="myClientContext">
+	        <selector class="com.da.editor.logic.ValidationDelegateClientSelector"/>
+	     </clientContext>
+	     <binding
+	           context="myClientContext"
+	           category="PersonConstraints"/>
+	</extension> 
+
+
+</plugin>
